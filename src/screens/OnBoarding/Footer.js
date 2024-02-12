@@ -125,7 +125,7 @@ export const Footer = ({
                   fontSize: 15,
                   color: color.palette.white,
                 }}
-                disabled={disabled}
+                // disabled={disabled}
               />
               {/* <TouchableOpacity
                 activeOpacity={0.8}

@@ -32,7 +32,7 @@ export const RootNavigator = React.forwardRef((props, ref) => {
   useEffect(() => {
     load(ONBOARDING_SCREEN).then(res => {
       if (res == null) {
-        setIsFirstTimeLoad(true);
+        setIsFirstTimeLoad(false); //direct home screen
       } else {
         setIsFirstTimeLoad(true);
       }

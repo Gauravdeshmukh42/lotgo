@@ -2,12 +2,14 @@ import React from "react";
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
   Share,
   TouchableWithoutFeedback,
   useWindowDimensions,
+  StatusBar,
 } from "react-native";
 const { height, width } = Dimensions.get("window");
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -22,8 +24,11 @@ import RenderHtml, {
   useInternalRenderer,
 } from "react-native-render-html";
 import { getFormatedImageUrl } from "../utils/imageUrlManipulation";
-const screenHeight = Math.round((width * 9) / 16);
+import { useState } from "react";
+const screenHeight = Math.round((width * 3) / 5);
 const screenWidth = width;
+console.log("Screen Height ", screenHeight)
+console.log("Screen Width ", screenWidth)
 const CustomImageRenderer = (props) => {
   const { Renderer, rendererProps } = useInternalRenderer("img", props);
   const uri = rendererProps.source.uri;
@@ -34,6 +39,7 @@ const CustomImageRenderer = (props) => {
   };
   return <Renderer {...rendererProps} source={thumbnailSource} />;
 };
+console.log("Height", screenHeight, "Width", width)
 export const Card = ({ news }) => {
   const { openBottomSheet } = useBottomSheet();
   const navigation = useNavigation();
@@ -73,13 +79,25 @@ export const Card = ({ news }) => {
   };
   const tagsStyles = {
     img: {
-      width: width,
-    },
-  };
+      width: 60,
+      height: 60,
 
+    },
+    p: {
+      color: 'black',
+    }
+  };
+  // console.log("Content ", news?.attributes?.imgUrl)
   // const defaultTextProps = {
   //   numberOfLines: 20,
   // };
+  const [cardHeight, setCardHeight] = useState(screenHeight);
+  const onLayout = event => {
+    let height = event.nativeEvent.layout.height;
+    if (height > screenHeight) setCardHeight(height);
+  }
+  console.log("Card Height : ", cardHeight);
+  console.log("Screen Height : ", height - StatusBar.currentHeight - 10);
   return (
     // <View activeOpacity={1} style={styles.card}>
     //   <Text style={styles.header}>{card?.attributes?.title ?? ""}</Text>
@@ -88,7 +106,8 @@ export const Card = ({ news }) => {
     //     {`${card?.attributes?.details?.slice(0, 45)}...`}
     //   </Text>
     // </View>
-    <View style={[styles.card, { height: screenHeight, width: screenWidth }]}>
+
+    <View style={[styles.card, { width: screenWidth - 30 }]} >
       <View>
         <Text style={styles.header}>{news?.attributes?.title ?? ""}</Text>
       </View>
@@ -98,14 +117,19 @@ export const Card = ({ news }) => {
           onPress={() => {
             news.attributes.more_content
               ? navigation.navigate(Routes.CARD_DETAILS_SCREEN, {
-                  cardDetails: news,
-                })
+                cardDetails: news,
+              })
               : null;
           }}
         >
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, borderColor: "red", borderWidth: 5, alignItems: 'center' }} >
+            <Image source={{ uri: news?.attributes?.imgUrl }} style={{
+              height: 50,
+              resizeMode: "contain",
+              width: width,
+            }} />
             <RenderHtml
-              contentWidth={width - 30}
+              contentWidth={width}
               source={{ html: news?.attributes?.content }}
               customHTMLElementModels={customHTMLElementModels}
               renderers={renderers}
@@ -184,6 +208,7 @@ export const Card = ({ news }) => {
           <Ionicons name="ellipsis-vertical" color={color.primary} size={26} />
         </TouchableOpacity>
       </View>
+
     </View>
   );
 };
@@ -195,16 +220,20 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     // alignItems: "center",
     backgroundColor: "white",
-    borderRadius: 5,
+    borderRadius: 10,
     shadowColor: "black",
     shadowOffset: {
       width: 0,
       height: 2,
     },
+    flex: 1,
     shadowRadius: 6,
     shadowOpacity: 0.3,
-    flex: 1,
     padding: 10,
+    marginTop: 7,
+    borderStyle: "solid",
+    borderColor: "black",
+    borderWidth: 2,
     // flexDirection: "column",
   },
   header: {
@@ -244,5 +273,9 @@ const styles = StyleSheet.create({
     // paddingTop: 15,
     // paddingBottom: 15,
     // marginRight: 15,
+  },
+  tinyLogo: {
+    width: 50,
+    height: 50,
   },
 });

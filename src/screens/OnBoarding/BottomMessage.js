@@ -7,7 +7,7 @@ export function BottomMessage() {
   return (
     <>
       <Text style={styles.text}>
-        By continuing you accept
+        By continuing you accept 
         <Text
           style={styles.textLink}
           onPress={() => {

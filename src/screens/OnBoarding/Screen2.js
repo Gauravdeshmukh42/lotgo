@@ -19,31 +19,65 @@ export const Screen2 = ({
   currentIndex,
   slides,
 }) => {
-  // const categories = [
-  //   {
-  //     attributes: {
-  //       name: "software & It",
-  //     },
-  //   },
-  //   {
-  //     attributes: {
-  //       name: "Electronics & Hardware",
-  //     },
-  //   },
-  //   {
-  //     attributes: {
-  //       name: "Finance & Accounting",
-  //     },
-  //   },
-  // ];
+  const categoryList = [{
+    id: 1,
+    attributes: {
+      name: 'Google Analytics',
+      icon: {
+        data: {
+          attributes: {
+            formats: {
+              thumbnail: {
+                url: 'https://images.unsplash.com/photo-1674505667713-4d4e8523366e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 2,
+    attributes: {
+      name: 'Google It Support',
+      icon: {
+        data: {
+          attributes: {
+            formats: {
+              thumbnail: {
+                url: 'https://images.unsplash.com/photo-1674505667713-4d4e8523366e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    id: 3,
+    attributes: {
+      name: 'Google Project Management',
+      icon: {
+        data: {
+          attributes: {
+            formats: {
+              thumbnail: {
+                url: 'https://images.unsplash.com/photo-1674505667713-4d4e8523366e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+              },
+            },
+          },
+        },
+      },
+    },
+  },]
   const [selectedCategories, setSelectedCategories] = useState([]);
   const { categories, categoriesData } = useSelector((state) => state.news);
   const [loadingMoreCategories, setLoadingMoreCategories] =
     React.useState(false);
-  const [categoryList, setCategoryList] = useState([]);
-  useEffect(() => {
-    setCategoryList(categories?.childs?.filter((cat) => cat?.level === 1));
-  }, [categories]);
+  // const [categoryList, setCategoryList] = useState([]);
+  // useEffect(() => {
+  //   setCategoryList(categories?.childs?.filter((cat) => cat?.level === 1));
+  // }, [categories]);
   const onSelectCategory = (category) => {
     if (selectedCategories?.some((cat) => cat?.id === category?.id)) {
       setSelectedCategories(

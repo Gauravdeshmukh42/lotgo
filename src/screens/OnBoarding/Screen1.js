@@ -1,13 +1,13 @@
 import React from 'react';
-import {StyleSheet, Dimensions, View, TouchableOpacity} from 'react-native';
-import {defaultValues} from '../../constants/defaultValues';
-import {color} from '../../theme';
-import {Button, Text} from '../../ui';
-import {BottomMessage} from './BottomMessage';
-import {Footer} from './Footer';
+import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
+import { defaultValues } from '../../constants/defaultValues';
+import { color } from '../../theme';
+import { Button, Text } from '../../ui';
+import { BottomMessage } from './BottomMessage';
+import { Footer } from './Footer';
 
-const {width} = Dimensions.get('window');
-import {authorize} from 'react-native-app-auth';
+const { width } = Dimensions.get('window');
+import { authorize } from 'react-native-app-auth';
 
 const config = {
   issuer: 'http://13.234.108.242:31709/realms/learn',
@@ -28,8 +28,8 @@ export const Screen1 = ({
     console.log('result', result);
   };
   return (
-    <View style={[styles.container, {width, position: 'relative'}]}>
-      <View style={{flex: 1}}>
+    <View style={[styles.container, { width, position: 'relative' }]}>
+      <View style={{ flex: 1 }}>
         <TouchableOpacity
           style={{
             alignItems: 'flex-end',

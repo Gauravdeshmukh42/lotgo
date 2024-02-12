@@ -8,11 +8,12 @@ import {
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {color} from '../../theme';
+import { color } from '../../theme';
 
-import {API_URL_DEV} from '@env';
+import { API_URL_DEV } from '@env';
 export const CategoryCard = React.memo(
-  ({category, index, onSelect, selected, style}) => {
+  ({ category, index, onSelect, selected, style }) => {
+
     return (
       <TouchableWithoutFeedback onPress={() => onSelect(category)}>
         <View
@@ -38,7 +39,7 @@ export const CategoryCard = React.memo(
                   : color.palette.black,
                 borderWidth: 1,
                 borderRadius: 10,
-                height: 70,
+                height: 100,
               },
             ]}>
             {category?.attributes?.icon?.data?.attributes?.formats?.thumbnail
@@ -56,7 +57,9 @@ export const CategoryCard = React.memo(
                 }}>
                 <Image
                   source={{
-                    uri: `${API_URL_DEV}${category.attributes.icon.data.attributes.formats.thumbnail.url}`,
+                    // uri: `${API_URL_DEV}${category.attributes.icon.data.attributes.formats.thumbnail.url}`,
+                    uri: `${category.attributes.icon.data.attributes.formats.thumbnail.url}`,
+
                   }}
                   style={[
                     {
@@ -64,23 +67,26 @@ export const CategoryCard = React.memo(
                       // borderTopRightRadius: 10,
                       // borderBottomRightRadius: 10,
                       resizeMode: 'contain',
-                      width: 60,
-                      height: 60,
+                      width: 150,
+                      height: 100,
                       borderRadius: 5,
                     },
                   ]}
                 />
               </View>
             ) : (
-              <Text style={{height: 60}}></Text>
+              <Text style={{ height: 60 }}></Text>
             )}
+
+
             <Text
               style={[
                 styles.categoryName,
-                {color: selected ? color.palette.white : color.palette.black},
+                // { color: selected ? color.palette.white : color.palette.black },
+                { color: 'white'}
               ]}
               numberOfLines={3}>
-              {category.name}
+              {category.attributes.name}
             </Text>
 
             {selected && (
@@ -123,8 +129,9 @@ const styles = StyleSheet.create({
     // color: color.palette.white,
     // position: "absolute",
     flexWrap: 'wrap',
-    alignItems: 'center',
+    // alignItems: 'center',
     alignSelf: 'center',
+    textAlign: 'center'
   },
   iconContainer: {
     position: 'absolute',
