@@ -20,6 +20,7 @@ export function DashboardStack() {
         options={{
           headerBackTitle: "",
           headerTitle: "",
+          // headerShown: false
         }}
       />
     </Stack.Navigator>

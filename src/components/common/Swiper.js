@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import {
   Animated,
   Dimensions,
@@ -6,9 +6,11 @@ import {
   StyleSheet,
   View,
   StatusBar,
+  ScrollView,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-const { height } = Dimensions.get('screen');
+import {Screen} from '../../ui';
+const {height} = Dimensions.get('screen');
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const INPUT_RANGE = [-height, 0, height];
 const getScaleStyles = responder =>
@@ -34,14 +36,14 @@ export default function Swiper({
   onSwipedTop,
   onSwipedBottom,
 }) {
-  console.log("Screen Height", SCREEN_HEIGHT)
-  console.log("Status Bar Height", StatusBar.currentHeight)
+  console.log('Screen Height', SCREEN_HEIGHT);
+  console.log('Status Bar Height', StatusBar.currentHeight);
   const pan = useRef(new Animated.ValueXY()).current;
   const swipeCardPosition = useRef(
     new Animated.ValueXY({
       x: 0,
       y: -SCREEN_HEIGHT - StatusBar.currentHeight,
-    })
+    }),
   ).current;
 
   const panResponder = PanResponder.create({
@@ -82,7 +84,7 @@ export default function Swiper({
     onPanResponderRelease: (_, gestureState) => {
       if (cardIndex > 0 && gestureState.dy > 50) {
         Animated.timing(swipeCardPosition, {
-          toValue: { x: 0, y: 0 },
+          toValue: {x: 0, y: 0},
           duration: 200,
           useNativeDriver: true,
         }).start(() => {
@@ -92,25 +94,23 @@ export default function Swiper({
             y: -SCREEN_HEIGHT - StatusBar.currentHeight,
           });
         });
-      }
-      else if (cardIndex < data.length - 1 && -gestureState.dy > 50) {
+      } else if (cardIndex < data.length - 1 && -gestureState.dy > 50) {
         Animated.timing(pan, {
-          toValue: { x: 0, y: -SCREEN_HEIGHT - StatusBar.currentHeight },
+          toValue: {x: 0, y: -SCREEN_HEIGHT - StatusBar.currentHeight},
           duration: 200,
           useNativeDriver: true,
         }).start(() => {
           onSwipedTop(cardIndex);
-          pan.setValue({ x: 0, y: 0 });
+          pan.setValue({x: 0, y: 0});
         });
-      }
-      else {
+      } else {
         Animated.parallel([
           Animated.spring(pan, {
-            toValue: { x: 0, y: 0 },
+            toValue: {x: 0, y: 0},
             useNativeDriver: true,
           }),
           Animated.spring(swipeCardPosition, {
-            toValue: { x: 0, y: -SCREEN_HEIGHT - StatusBar.currentHeight },
+            toValue: {x: 0, y: -SCREEN_HEIGHT - StatusBar.currentHeight},
             useNativeDriver: true,
           }),
         ]).start();
@@ -120,16 +120,16 @@ export default function Swiper({
 
   const nextCardScale = getScaleStyles(pan);
   const nextCardTranslateY = getTranslateYStyles(pan);
-  console.log("SwipeCardPosition", swipeCardPosition)
+  console.log('SwipeCardPosition', swipeCardPosition);
   const currentCardScale = getScaleStyles(swipeCardPosition);
-  console.log("CurrentCardScale : ", currentCardScale)
+  console.log('CurrentCardScale : ', currentCardScale);
   const currentCardTranslateY = getTranslateYStyles(swipeCardPosition);
-  console.log("currentCardTranslateY", currentCardTranslateY)
+  console.log('currentCardTranslateY', currentCardTranslateY);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1,borderColor:'green',borderWidth:5}}>
       {data
         ?.map((news, index) => {
-          console.log("Swiper compo", news);
+          console.log('Swiper compo', news);
           if (index === cardIndex - 1) {
             return (
               <Animated.View
@@ -139,8 +139,8 @@ export default function Swiper({
                   styles.container,
                   {
                     transform: [
-                      { translateX: swipeCardPosition.x },
-                      { translateY: swipeCardPosition.y },
+                      {translateX: swipeCardPosition.x},
+                      {translateY: swipeCardPosition.y},
                     ],
                   },
                 ]}>
@@ -158,10 +158,10 @@ export default function Swiper({
                   styles.container,
                   {
                     transform: [
-                      { translateX: pan.x },
-                      { translateY: pan.y },
-                      { scale: currentCardScale },
-                      { translateY: currentCardTranslateY },
+                      {translateX: pan.x},
+                      {translateY: pan.y},
+                      {scale: currentCardScale},
+                      {translateY: currentCardTranslateY},
                     ],
                   },
                 ]}>
@@ -177,8 +177,8 @@ export default function Swiper({
                   styles.container,
                   {
                     transform: [
-                      { scale: nextCardScale },
-                      { translateY: nextCardTranslateY },
+                      {scale: nextCardScale},
+                      {translateY: nextCardTranslateY},
                     ],
                   },
                 ]}>
@@ -199,7 +199,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    alignItems: 'center'
-
+    alignItems: 'center',
   },
 });
