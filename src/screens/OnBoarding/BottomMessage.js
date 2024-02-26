@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     color: color.palette.warmGrey,
     // textAlign: "center",
     fontSize: 14,
+    padding:5,
   },
   textLink: {
     color: color.primary,

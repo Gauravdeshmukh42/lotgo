@@ -87,6 +87,22 @@ export const Home = () => {
               javascript is essential for some of the concepts explain here
               <br/> Knowledge of
               javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              </p><br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
               </p>`,
             },
           },
@@ -94,8 +110,59 @@ export const Home = () => {
             attributes: {
               title: 'Components',
               content: `<p>Learn about some of the most important
-              concepts of react to help you get started quickly. Knowledge of
-              javascript is essential for some of the concepts explain here</p>`,
+              concepts of react to help you get started quickly.<br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/>
+              Learn about some of the most important
+              concepts of react to help you get started quickly.<br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              <br/> Knowledge of
+              javascript is essential for some of the concepts explain here
+              </p>`,
+            },
+          },
+          {
+            attributes: {
+              title: 'Sample subTitle 1',
+              content: `<p>Sample content 1`,
             },
           },
         ],
@@ -110,7 +177,43 @@ export const Home = () => {
           {
             attributes: {
               title: 'Sample subTitle 1',
-              content: `<p>Sample content 1`,
+              imgUrl: `https://shorturl.at/bisyL`,
+              content: `<p>In this updated version, we've introduced a loading state. While loading is true, we display an ActivityIndicator to indicate loading. Once the measurement is done (loading becomes false), we render either the child container or the overflow message based on the value of isOverflowing. This ensures that loading is shown when the measurement is in progress and content is displayed once it's complete.In this example:
+              <br/>
+              We create two refs, childRef for the child container and parentRef for the parent container.
+              Inside the useEffect hook, we measure the dimensions of both containers using the measure function.<br/>
+              We then compare the dimensions of the child container (childWidth, childHeight) with those of the parent container (parentWidth, parentHeight).
+              If the child's dimensions exceed the parent's dimensions in either width or height, isOverflowing is set to true, indicating overflow.
+              Finally, we render a message if overflow is detected. This approach works for checking overflow in both directions (horizontal and vertical).
+              loading is true, we display an ActivityIndicator to indicate loading. Once the measurement is done (loading becomes false), we render either the child container or the overflow message based on the value of isOverflowing. This ensures that loading is shown when the measurement is in progress and content is displayed once it's complete.In this example:
+              <br/><br/></p><p>
+              We create two refs, childRef for the child container and parentRef for the parent container.
+              Inside the useEffect hook, we measure the dimensions of both containers using the measure function.
+              We then compare the dimensions of the child container (childWidth, childHeight) with those of the parent container (parentWidth, parentHeight).
+              If the child's dimensions exceed the parent's dimensions in either width or height, isOverflowing is set to true, indicating overflow.
+              Finally, we render a message if overflow is detected. This approach works for checking overflow in both directions (horizontal and vertical).
+              loading is true, we display an ActivityIndicator to indicate loading. Once the measurement is done (loading becomes false), we render either the child container or the overflow message based on the value of isOverflowing. This ensures that loading is shown when the measurement is in progress and content is displayed once it's complete.In this example:
+              <br/><br/>
+              We create two refs, childRef for the child container and parentRef for the parent container.
+              Inside the useEffect hook, we measure the dimensions of both containers using the measure function.
+              We then compare the dimensions of the child container (childWidth, childHeight) with those of the parent container (parentWidth, parentHeight).
+              If the child's dimensions exceed the parent's dimensions in either width or height, isOverflowing is set to true, indicating overflow.
+              Finally, we render a message if overflow is detected. This approach works for checking overflow in both directions (horizontal and vertical).
+              <br/><br/>
+              If the child's dimensions exceed the parent's dimensions in either width or height, isOverflowing is set to true, indicating overflow.
+              Finally, we render a message if overflow is detected. This approach works for checking overflow in both directions (horizontal and vertical).<br/></p>`,
+            },
+          },
+          {
+            attributes: {
+              title: 'Sample subTitle 2',
+              content: `<p>Sample content 2`,
+            },
+          },
+          {
+            attributes: {
+              title: 'Sample subTitle 2',
+              content: `<p>Sample content 2`,
             },
           },
           {
@@ -212,7 +315,7 @@ export const Home = () => {
     <Screen variant={'scroll'}>
       <View style={[styles.container]}>
         {posts?.map((news, index) => {
-          console.log('Card', news);
+          // console.log('Card', news);
           return <Card news={news} key={index} />;
         })}
       </View>

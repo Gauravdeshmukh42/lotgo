@@ -114,7 +114,7 @@ export const BottomTabsStack = () => {
             },
           }}
         />
-        <BottomTabs.Screen
+        {/* <BottomTabs.Screen
           name={Routes.ACCOUNT_STACK}
           component={AccountStack}
           options={{
@@ -130,7 +130,7 @@ export const BottomTabsStack = () => {
               );
             },
           }}
-        />
+        /> */}
       </BottomTabs.Navigator>
     </View>
     // </NavigationContainer>

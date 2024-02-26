@@ -1,7 +1,9 @@
 export const defaultValues = {
   loginButtonText: "Login",
   ...{
-    onBoardScreenTitle: "World's Fastest learning Platform",
+    onBoardScreenTitle: "GROWIUM",
+    onBoardDescription:"Learn on the go.",
+    onBoardDescription2:"Quick Learning Platform",
     continueButtonText: "Continue",
     onBoardScreen2Title: "Select your learing interest",
     nextButtonText: "Next",

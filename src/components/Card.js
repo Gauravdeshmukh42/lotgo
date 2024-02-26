@@ -9,7 +9,8 @@ import {
   Share,
   TouchableWithoutFeedback,
   useWindowDimensions,
-  StatusBar,
+  Modal,
+  Pressable,
 } from 'react-native';
 const {height, width} = Dimensions.get('window');
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -28,9 +29,12 @@ import {useState} from 'react';
 import {useEffect} from 'react';
 import {useRef} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
+import {set, toLower, view} from 'ramda';
+import {useRoute} from '@react-navigation/native';
+import {TouchableHighlight} from '@gorhom/bottom-sheet';
 const screenHeight = Math.round((width * 3) / 5);
 const screenWidth = width;
-console.log('Screen Height ', screenHeight);
+// console.log('Screen Height ', screenHeight);
 
 const CustomImageRenderer = props => {
   const {Renderer, rendererProps} = useInternalRenderer('img', props);
@@ -42,12 +46,12 @@ const CustomImageRenderer = props => {
   };
   return <Renderer {...rendererProps} source={thumbnailSource} />;
 };
-console.log('Height', screenHeight, 'Width', width);
-export const Card = ({news}) => {
+// console.log('Height', screenHeight, 'Width', width);
+export const Card = ({news, cardIndex}) => {
   const {openBottomSheet} = useBottomSheet();
   const navigation = useNavigation();
-  const {width} = useWindowDimensions();
-
+  const {width, height} = useWindowDimensions();
+  const route = useRoute();
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -76,6 +80,9 @@ export const Card = ({news}) => {
     input: defaultHTMLElementModels.input.extend({
       contentModel: HTMLContentModel.block,
     }),
+    button: defaultHTMLElementModels.button.extend({
+      contentModel: HTMLContentModel.block,
+    }),
   };
   const renderers = {
     img: CustomImageRenderer,
@@ -86,22 +93,97 @@ export const Card = ({news}) => {
       height: 60,
     },
     p: {
-      color: 'black',
+      color: 'white',
+    },
+    button: {
+      width: 90,
+      color: 'blue',
     },
   };
-  return (
-    // <View activeOpacity={1} style={styles.card}>
-    //   <Text style={styles.header}>{card?.attributes?.title ?? ""}</Text>
-    //   <Text style={styles.abstract}>{card?.attributes?.abstract ?? ""}</Text>
-    //   <Text style={styles.text}>
-    //     {`${card?.attributes?.details?.slice(0, 45)}...`}
-    //   </Text>
-    // </View>
-    <View
-      style={[styles.card, {width: screenWidth - 30}]}
-      onLayout={event => {
-        console.log(event.nativeEvent.layout);
-      }}>
+  const [visible, setVisible] = useState(false);
+  const [buttonFlag, setButtonFlag] = useState(false);
+  const toggleSwitch = () => {
+    setVisible(previousState => !previousState);
+  };
+  const [content, setContent] = useState(news?.attributes?.content);
+  const [totalHeight, setTotalHeight] = useState((height * 80) / 100);
+  const getTotalHeight = event => {
+    setTotalHeight(event.nativeEvent.layout.height);
+    // console.log('Real Height : ', event.nativeEvent.layout.height);
+  };
+  const truncateHTML = (html, maxLength) => {
+    const truncated = html.slice(0, maxLength);
+    const lastTagIndex = truncated.lastIndexOf('>');
+    return truncated.substring(0, lastTagIndex + 1);
+  };
+  const expectedHeight = (totalHeight * 80) / 100;
+  const compressContent = event => {
+    // console.log('Total Height', totalHeight);
+    // console.log('Expected Height', expectedHeight);
+    // if (event.nativeEvent.layout.height > expectedHeight) {
+    //   setButtonFlag(true);
+    //   const limit = height + totalHeight - expectedHeight;
+    //   console.log('limit', limit);
+    //   // setContent(truncateHTML(news?.attributes?.content, limit));
+    // }
+  };
+  // const getHeightOfChildContainer = event => {
+  //   // console.log('Height of Child Container', event.nativeEvent.layout.height);
+  //   // setChildHeight(event.nativeEvent.layout.height);
+  //   if (childRef.current) {
+  //     childRef.current.measure(height => {
+  //       console.log('Parent Height', height);
+  //     });
+  //   }
+  // };
+  const parentRef = useRef(null);
+  const childRef = useRef(null);
+  const [isOverflowing, setIsOverflowing] = useState(true);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (childRef.current && parentRef.current) {
+      childRef.current.measure((childX, childY, childWidth, childHeight) => {
+        parentRef.current.measure(
+          (parentX, parentY, parentWidth, parentHeight) => {
+            setIsOverflowing(childHeight > parentHeight);
+            setLoading(false);
+            console.log("Card Index : ", cardIndex);
+            console.log('Child Height', childHeight);
+            console.log('Parent Height', parentHeight);
+            console.log('Overflow', childHeight > parentHeight);
+          },
+        );
+      });
+    }
+    console.log('Child Height23');
+    console.log(cardIndex);
+  }, [parentRef.current, childRef.current,cardIndex]);
+  return visible ? (
+    <Modal visible={visible} transparent={true}>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 30,
+          marginTop: 15,
+        }}>
+        <ScrollView style={styles.overlay}>
+          <Pressable onPress={toggleSwitch}>
+            <RenderHtml
+              contentWidth={width}
+              source={{html: news?.attributes?.content}}
+              customHTMLElementModels={customHTMLElementModels}
+              renderers={renderers}
+              tagsStyles={tagsStyles}
+              ignoredStyles={['height', 'width']}
+              enableExperimentalMarginCollapsing={true}
+            />
+          </Pressable>
+        </ScrollView>
+      </View>
+    </Modal>
+  ) : (
+    <View style={[styles.card, {width: screenWidth - 30}]}>
       <View>
         <Text style={styles.header}>{news?.attributes?.title ?? ''}</Text>
       </View>
@@ -117,12 +199,15 @@ export const Card = ({news}) => {
           }}>
           <View
             style={{
-              // flex: 1,
-              borderColor: 'red',
+              flex: 1,
+              borderColor: 'white',
               borderWidth: 5,
               alignItems: 'center',
-              height: 'auto',
-            }}>
+              // height: 'auto',
+              overflow: 'hidden',
+            }}
+            ref={parentRef}
+            onLayout={compressContent}>
             <Image
               source={{uri: news?.attributes?.imgUrl}}
               style={{
@@ -131,15 +216,20 @@ export const Card = ({news}) => {
                 width: width,
               }}
             />
-            <RenderHtml
-              contentWidth={width}
-              source={{html: news?.attributes?.content}}
-              customHTMLElementModels={customHTMLElementModels}
-              renderers={renderers}
-              tagsStyles={tagsStyles}
-              ignoredStyles={['height', 'width']}
-              enableExperimentalMarginCollapsing={true}
-            />
+            <View
+              // onLayout={getHeightOfChildContainer}
+              ref={childRef}
+              style={{borderColor: 'red', borderWidth: 5, height: 'auto'}}>
+              <RenderHtml
+                contentWidth={width}
+                source={{html: content}}
+                customHTMLElementModels={customHTMLElementModels}
+                renderers={renderers}
+                tagsStyles={tagsStyles}
+                ignoredStyles={['height', 'width']}
+                enableExperimentalMarginCollapsing={true}
+              />
+            </View>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -159,6 +249,17 @@ export const Card = ({news}) => {
         <View style={styles.button}>
           <Ionicons name="md-add-sharp" color={color.primary} size={26} />
         </View>
+        {isOverflowing ? (
+          <View style={{marginRight: 5}}>
+            <Ionicons
+              name="book"
+              size={26}
+              color={color.primary}
+              onPress={toggleSwitch}
+            />
+          </View>
+        ) : null}
+
         <TouchableOpacity
           onPress={() => {
             openBottomSheet({
@@ -212,12 +313,21 @@ export const Card = ({news}) => {
 };
 
 const styles = StyleSheet.create({
+  overlay: {
+    backgroundColor: 'white',
+    borderColor: 'black',
+    borderWidth: 2,
+    borderRadius: 10,
+    width: screenWidth,
+    padding: 10,
+    // height:'auto',
+  },
   card: {
     /* Setting the height according to the screen height, it also could be fixed value or based on percentage. */
     // height: height - tabBarHeight,
     // justifyContent: "center",
     // alignItems: "center",
-    backgroundColor: 'white',
+    backgroundColor: '#5e5858',
     borderRadius: 10,
     shadowColor: 'black',
     shadowOffset: {
@@ -230,8 +340,10 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 7,
     borderStyle: 'solid',
-    borderColor: 'black',
+    borderColor: 'white',
     borderWidth: 2,
+    zIndex: 1,
+    color: 'white',
     height: 'auto',
     // flexDirection: "column",
   },
@@ -239,7 +351,7 @@ const styles = StyleSheet.create({
     // margin: 10,
     marginTop: 10,
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
     fontSize: 20,
     textTransform: 'capitalize',
   },
