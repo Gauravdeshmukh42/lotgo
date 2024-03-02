@@ -9,8 +9,6 @@ import {
   ScrollView,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import {Screen} from '../../ui';
-import {useState} from 'react';
 const {height} = Dimensions.get('screen');
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const INPUT_RANGE = [-height, 0, height];
@@ -131,7 +129,6 @@ export default function Swiper({
               <Animated.View
                 key={index}
                 {...panResponder.panHandlers}
-                // onLayout={handleLayout(index)}
                 style={[
                   styles.container,
                   {
@@ -151,7 +148,6 @@ export default function Swiper({
               <Animated.View
                 key={index}
                 {...panResponder.panHandlers}
-                // onLayout={handleLayout(index)}
                 style={[
                   styles.container,
                   {
@@ -171,7 +167,6 @@ export default function Swiper({
             return (
               <Animated.View
                 key={index}
-                // onLayout={handleLayout(index)}
                 style={[
                   styles.container,
                   {

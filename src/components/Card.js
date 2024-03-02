@@ -13,6 +13,7 @@ import {
   Pressable,
 } from 'react-native';
 const {height, width} = Dimensions.get('window');
+import {CARD_IMAGE_HEIGHT, SCREEN_WIDTH} from '../screens/Home/HeightConstants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {SheetOptions, useBottomSheet} from '../context';
@@ -31,7 +32,8 @@ import {useRef} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import {set, toLower, view} from 'ramda';
 import {useRoute} from '@react-navigation/native';
-import {TouchableHighlight} from '@gorhom/bottom-sheet';
+import {SCREEN_HEIGHT, TouchableHighlight} from '@gorhom/bottom-sheet';
+import {MAX_HEIGHT_CONTENT} from '../screens/Home/HeightConstants';
 const screenHeight = Math.round((width * 3) / 5);
 const screenWidth = width;
 // console.log('Screen Height ', screenHeight);
@@ -88,16 +90,21 @@ export const Card = ({news, cardIndex}) => {
     img: CustomImageRenderer,
   };
   const tagsStyles = {
-    img: {
-      width: 60,
-      height: 60,
-    },
+    // img: {
+    //   // width: 100,
+    //   // height: 100,
+    //   enableExperimentalPercentWidth: true,
+    // },
     p: {
-      color: 'white',
+      // color: 'white',
+      color: 'black',
     },
     button: {
       width: 90,
       color: 'blue',
+    },
+    h1: {
+      color: 'black',
     },
   };
   const [visible, setVisible] = useState(false);
@@ -136,32 +143,44 @@ export const Card = ({news, cardIndex}) => {
   //     });
   //   }
   // };
-  const parentRef = useRef(null);
-  const childRef = useRef(null);
-  const [isOverflowing, setIsOverflowing] = useState(true);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (childRef.current && parentRef.current) {
-      childRef.current.measure((childX, childY, childWidth, childHeight) => {
-        parentRef.current.measure(
-          (parentX, parentY, parentWidth, parentHeight) => {
-            setIsOverflowing(childHeight > parentHeight);
-            setLoading(false);
-            console.log("Card Index : ", cardIndex);
-            console.log('Child Height', childHeight);
-            console.log('Parent Height', parentHeight);
-            console.log('Overflow', childHeight > parentHeight);
-          },
-        );
-      });
-    }
-    console.log('Child Height23');
-    console.log(cardIndex);
-  }, [parentRef.current, childRef.current,cardIndex]);
+  // const parentRef = useRef(null);
+  // const childRef = useRef(null);
+  // const [isOverflowing, setIsOverflowing] = useState(true);
+  // const [loading, setLoading] = useState(true);
+  // useEffect(() => {
+  //   if (childRef.current && parentRef.current) {
+  //     childRef.current.measure((childX, childY, childWidth, childHeight) => {
+  //       parentRef.current.measure(
+  //         (parentX, parentY, parentWidth, parentHeight) => {
+  //           setIsOverflowing(childHeight > parentHeight);
+  //           setLoading(false);
+  //           console.log("Card Index : ", cardIndex);
+  //           console.log('Child Height', childHeight);
+  //           console.log('Parent Height', parentHeight);
+  //           console.log('Overflow', childHeight > parentHeight);
+  //         },
+  //       );
+  //     });
+  //   }
+  //   console.log('Child Height23');
+  //   console.log(cardIndex);
+  // }, [parentRef.current, childRef.current,cardIndex]);
+  const [contentHeight, setContentHeight] = useState(0);
+  const showMore = contentHeight > MAX_HEIGHT_CONTENT;
+  console.log('*******CARD INDEX********', cardIndex);
+  console.log('Max height', MAX_HEIGHT_CONTENT);
+  console.log('Content Height', contentHeight);
+  console.log('ShowMore', showMore);
+
+  const handleLayout = event => {
+    const height = event.nativeEvent.layout.height;
+    setContentHeight(height);
+  };
   return visible ? (
-    <Modal visible={visible} transparent={true}>
+    <Modal>
       <View
         style={{
+          flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
           padding: 30,
@@ -170,8 +189,8 @@ export const Card = ({news, cardIndex}) => {
         <ScrollView style={styles.overlay}>
           <Pressable onPress={toggleSwitch}>
             <RenderHtml
-              contentWidth={width}
-              source={{html: news?.attributes?.content}}
+              contentWidth={screenWidth}
+              source={{html: content}}
               customHTMLElementModels={customHTMLElementModels}
               renderers={renderers}
               tagsStyles={tagsStyles}
@@ -206,29 +225,32 @@ export const Card = ({news, cardIndex}) => {
               // height: 'auto',
               overflow: 'hidden',
             }}
-            ref={parentRef}
             onLayout={compressContent}>
-            <Image
-              source={{uri: news?.attributes?.imgUrl}}
-              style={{
-                height: 50,
-                resizeMode: 'contain',
-                width: width,
-              }}
-            />
-            <View
-              // onLayout={getHeightOfChildContainer}
-              ref={childRef}
-              style={{borderColor: 'red', borderWidth: 5, height: 'auto'}}>
-              <RenderHtml
-                contentWidth={width}
-                source={{html: content}}
-                customHTMLElementModels={customHTMLElementModels}
-                renderers={renderers}
-                tagsStyles={tagsStyles}
-                ignoredStyles={['height', 'width']}
-                enableExperimentalMarginCollapsing={true}
+            {news?.attributes?.imgUrl ? (
+              <Image
+                source={{uri: news?.attributes?.imgUrl}}
+                style={{
+                  height: 50,
+                  resizeMode: 'contain',
+                  width: width,
+                }}
               />
+            ) : null}
+
+            <View
+              style={{borderColor: 'red', borderWidth: 5, height: 'auto'}}
+              onLayout={handleLayout}>
+              <View>
+                <RenderHtml
+                  contentWidth={SCREEN_WIDTH * 0.7}
+                  source={{html: content}}
+                  customHTMLElementModels={customHTMLElementModels}
+                  renderers={renderers}
+                  tagsStyles={tagsStyles}
+                  ignoredStyles={['height', 'width']}
+                  enableExperimentalMarginCollapsing={true}
+                />
+              </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -249,7 +271,7 @@ export const Card = ({news, cardIndex}) => {
         <View style={styles.button}>
           <Ionicons name="md-add-sharp" color={color.primary} size={26} />
         </View>
-        {isOverflowing ? (
+        {showMore ? (
           <View style={{marginRight: 5}}>
             <Ionicons
               name="book"
@@ -314,13 +336,13 @@ export const Card = ({news, cardIndex}) => {
 
 const styles = StyleSheet.create({
   overlay: {
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 10,
-    width: screenWidth,
+    width: SCREEN_WIDTH - 10,
     padding: 10,
-    // height:'auto',
+    height: 'auto',
   },
   card: {
     /* Setting the height according to the screen height, it also could be fixed value or based on percentage. */

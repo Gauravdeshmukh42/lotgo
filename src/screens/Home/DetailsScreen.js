@@ -10,17 +10,12 @@ import React from 'react';
 import {Screen} from '../../ui';
 const {height, width} = Dimensions.get('window');
 import Swiper from '../../components/common/Swiper';
-const screenHeight = Math.round((width * 9) / 16);
 import RenderHtml, {
   defaultHTMLElementModels,
   HTMLContentModel,
 } from 'react-native-render-html';
 import {useState} from 'react';
 import {Card} from '../../components/Card';
-import DeepStash from './DeepStash';
-import Horizontal from './Horizontal';
-import List from './List';
-// import LoadingBar from 'react-top-loading-bar';
 const DetailsScreen = ({navigation, route}) => {
   const [cardIndex, setCardIndex] = useState(0);
   const onSwipedTopCard = index => {
@@ -38,7 +33,6 @@ const DetailsScreen = ({navigation, route}) => {
     }),
   };
   const details = route.params.cardDetails;
-  // console.log(details.attributes.more_content);
   return (
     <Screen variant={'scroll'}>
       <View style={styles.container}>
@@ -55,13 +49,7 @@ const DetailsScreen = ({navigation, route}) => {
             <Text>No Data Available</Text>
           </View>
         )}
-        {/* <Horizontal data={details.attributes.more_content}/> */}
-        {/* <List data={details.attributes.more_content} /> */}
-
-        {/* <DeepStash data={details.attributes.more_content}/> */}
       </View>
-
-      {/* </View> */}
     </Screen>
   );
 };

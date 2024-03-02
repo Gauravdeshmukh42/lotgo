@@ -5,7 +5,7 @@ import {Card} from '../../components/Card';
 import {Screen} from '../../ui';
 import {interpolate} from 'react-native-reanimated';
 import Extrapolate from 'react-native-reanimated';
-import {ScrollView} from 'react-native-gesture-handler';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
 const {height, width} = Dimensions.get('window');
 const renderCard = ({item, index, animationValue}) => {
   return (
@@ -85,24 +85,24 @@ const Horizontal = ({data}) => {
           loop={false}
           layout={'parallax'}
           height={height} 
-          // customAnimation={parallaxLayout(
-          //   {
-          //     size: width,
-          //     vertical: false,
-          //   },
-          //   {
-          //     parallaxScrollingOffset: 100,
-          //     parallaxScrollingScale: 1,
-          //     parallaxAdjacentItemScale: 0.8,
-          //   },
-          // )}
-        />
-        */}
+          customAnimation={parallaxLayout(
+            {
+              size: width,
+              vertical: false,
+            },
+            {
+              parallaxScrollingOffset: 100,
+              parallaxScrollingScale: 1,
+              parallaxAdjacentItemScale: 0.8,
+            },
+          )}
+        /> */}
+
         <Carousel
           data={data}
           renderItem={renderCard}
           sliderWidth={width}
-          itemWidth={width-30}
+          itemWidth={width - 30}
           layout={'parallax'}
           slideStyle={parallaxLayout(
             {
