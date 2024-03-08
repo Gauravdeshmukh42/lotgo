@@ -1,48 +1,37 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import React from 'react';
-import {Screen} from '../../ui';
 const {height, width} = Dimensions.get('window');
+import SmoothSwiperRoot from '../../components/common/SmoothSwiper';
 import Swiper from '../../components/common/Swiper';
-import RenderHtml, {
-  defaultHTMLElementModels,
-  HTMLContentModel,
-} from 'react-native-render-html';
-import {useState} from 'react';
 import {Card} from '../../components/Card';
+import {useState} from 'react';
+import {Screen} from '../../ui';
+import {ScrollView} from 'react-native-gesture-handler';
+import {DetailCard} from '../../components/DetailCard';
 const DetailsScreen = ({navigation, route}) => {
   const [cardIndex, setCardIndex] = useState(0);
-  const onSwipedTopCard = index => {
+  const onSwipedTop = index => {
     setCardIndex(index + 1);
   };
-  const onSwipedBottomCard = index => {
+  const onSwipedBottom = index => {
     setCardIndex(index - 1);
-  };
-  const customHTMLElementModels = {
-    label: defaultHTMLElementModels.label.extend({
-      contentModel: HTMLContentModel.block,
-    }),
-    input: defaultHTMLElementModels.input.extend({
-      contentModel: HTMLContentModel.block,
-    }),
   };
   const details = route.params.cardDetails;
   return (
     <Screen variant={'scroll'}>
       <View style={styles.container}>
         {details?.attributes?.more_content ? (
+          // <SmoothSwiperRoot data={details?.attributes?.more_content} />
           <Swiper
             data={details.attributes.more_content}
             cardIndex={cardIndex}
-            renderCard={(news)=> <Card news={news} cardIndex={cardIndex}/>}
-            onSwipedTop={index => onSwipedTopCard(index)}
-            onSwipedBottom={index => onSwipedBottomCard(index)}
+            renderCard={news => (
+              <ScrollView>
+                <DetailCard news={news} cardIndex={cardIndex} />
+              </ScrollView>
+            )}
+            onSwipedTop={index => onSwipedTop(index)}
+            onSwipedBottom={index => onSwipedBottom(index)}
           />
         ) : (
           <View style={styles.noData}>

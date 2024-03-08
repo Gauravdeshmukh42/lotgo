@@ -2,14 +2,22 @@ const posts = [
   {
     attributes: {
       title: 'React Essentials in 5 minutes',
-      content: `<p>React Essentials in 5 minutes</p>`,
-      imgUrl: `https://shorturl.at/bisyL`,
+      content: `
+          <img
+            src="https://shorturl.at/bisyL"
+            alt="react image"
+            />
+            <p>React Essentials in 5 minutes</p>`,
       more_content: [
         {
           attributes: {
             title: 'React Essentails in 5 minutes',
-            imgUrl: `https://shorturl.at/bisyL`,
-            content: `<p>Learn about some of the most important
+            content: `
+            <img
+            src="https://shorturl.at/bisyL"
+            alt="react image"
+            />
+            <h1>React Essentials in 5 minutes</h1><p>Learn about some of the most important
               concepts of react to help you get started quickly.<br/> Knowledge of
               javascript is essential for some of the concepts explain here
               <br/> Knowledge of
@@ -49,10 +57,6 @@ const posts = [
               <br/> Knowledge of
               javascript is essential for some of the concepts explain here
               <br/> Knowledge of
-              javascript is essential for some of the concepts explain here
-              <br/> Knowledge of
-              javascript is essential for some of the concepts explain here
-              </p><br/> Knowledge of
               javascript is essential for some of the concepts explain here
               <br/> Knowledge of
               javascript is essential for some of the concepts explain here
@@ -62,7 +66,12 @@ const posts = [
         {
           attributes: {
             title: 'Components',
-            content: `<p>Learn about some of the most important
+            content: `
+              <img
+              src="https://shorturl.at/bisyL"
+              />
+              <h1>Components in React </h1>
+              <p>Learn about some of the most important
               concepts of react to help you get started quickly.<br/> Knowledge of
               javascript is essential for some of the concepts explain here
               <br/> Knowledge of
@@ -75,7 +84,7 @@ const posts = [
               javascript is essential for some of the concepts explain here
               <br/>
               Learn about some of the most important
-              concepts of react to help you get started quickly.<br/> Knowledge of
+              concepts of react to help you get started quickly. Knowledge of
               javascript is essential for some of the concepts explain here
               <br/> Knowledge of
               javascript is essential for some of the concepts explain here
@@ -130,8 +139,8 @@ const posts = [
         {
           attributes: {
             title: 'Sample subTitle 1',
-            imgUrl: `https://shorturl.at/bisyL`,
-            content: `<p>In this updated version, we've introduced a loading state. While loading is true, we display an ActivityIndicator to indicate loading. Once the measurement is done (loading becomes false), we render either the child container or the overflow message based on the value of isOverflowing. This ensures that loading is shown when the measurement is in progress and content is displayed once it's complete.In this example:
+            content: `
+            <h1>sample content here</h1><p>In this updated version, we've introduced a loading state. While loading is true, we display an ActivityIndicator to indicate loading. Once the measurement is done (loading becomes false), we render either the child container or the overflow message based on the value of isOverflowing. This ensures that loading is shown when the measurement is in progress and content is displayed once it's complete.In this example:
               <br/>
               We create two refs, childRef for the child container and parentRef for the parent container.
               Inside the useEffect hook, we measure the dimensions of both containers using the measure function.<br/>
@@ -162,9 +171,7 @@ const posts = [
             title: 'Sample subTitle 2',
             content: `
             <img
-            width="50" height="50"
-            style="object-fit: contain; align-self: center;"
-            src="http://placeimg.com/1200/800/animals"
+            src="https://shorturl.at/bisyL"
             />
             <h1>React native in 6 months</h1><p>We create two refs, childRef for the child container and parentRef for the parent container.
             Inside the useEffect hook, we measure the dimensions of both containers using the measure function.
@@ -174,7 +181,11 @@ const posts = [
             <br/><br/>
 
             If the child's dimensions exceed the parent's dimensions in either width or height, isOverflowing is set to true, indicating overflow.
-            Finally, we render a message if overflow is detected. This approach works for checking overflow in both directions (horizontal and vertical).</p>`,
+            Finally, we render a message if overflow is detected. This approach works for checking overflow in both directions (horizontal and vertical).
+            <br/><br/>
+            If the child's dimensions exceed the parent's dimensions in either width or height, isOverflowing is set to true, indicating overflow.
+            Finally, we render a message if overflow is detected. This approach works for checking overflow in both directions (horizontal and vertical).
+            </p>`,
           },
         },
         {
@@ -216,7 +227,7 @@ const posts = [
   },
   {
     attributes: {
-      title: 'Sample News Title 3',
+      title: 'Sample News Title 4',
       content: '<p>This is some sample content for the news item.</p>',
       more_content: [
         {

@@ -11,7 +11,11 @@ import {
   useWindowDimensions,
 } from 'react-native';
 const {height, width} = Dimensions.get('window');
-import {CARD_IMAGE_HEIGHT, SCREEN_WIDTH} from '../screens/Home/HeightConstants';
+import {
+  CARD_HEIGHT,
+  CARD_IMAGE_HEIGHT,
+  SCREEN_WIDTH,
+} from '../screens/Home/HeightConstants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {SheetOptions, useBottomSheet} from '../context';
@@ -24,18 +28,9 @@ import RenderHtml, {
   useInternalRenderer,
 } from 'react-native-render-html';
 import {getFormatedImageUrl} from '../utils/imageUrlManipulation';
+import {ScrollView} from 'react-native-gesture-handler';
 const screenWidth = width;
-const CustomImageRenderer = props => {
-  const {Renderer, rendererProps} = useInternalRenderer('img', props);
-  const uri = rendererProps.source.uri;
-  const thumbnailSource = {
-    ...rendererProps.source,
-    // You could change the uri here, for example to provide a thumbnail.
-    uri: getFormatedImageUrl(uri),
-  };
-  return <Renderer {...rendererProps} source={thumbnailSource} />;
-};
-export const Card = ({news, cardIndex}) => {
+export const DetailCard = ({news, cardIndex}) => {
   const {openBottomSheet} = useBottomSheet();
   const navigation = useNavigation();
   const {width, height} = useWindowDimensions();
@@ -74,9 +69,7 @@ export const Card = ({news, cardIndex}) => {
       contentModel: HTMLContentModel.block,
     }),
   };
-  const renderers = {
-    img: CustomImageRenderer,
-  };
+
   const tagsStyles = {
     p: {
       color: 'white',
@@ -111,101 +104,32 @@ export const Card = ({news, cardIndex}) => {
           }}>
           <View
             style={{
-              // borderColor: 'green',
-              // borderWidth: 5,
+              //   borderColor: 'green',
+              //   borderWidth: 5,
               overflow: 'hidden',
               alignItems: 'center',
               flex: 1,
             }}>
             <View>
-              <RenderHtml
-                contentWidth={SCREEN_WIDTH * 0.7}
-                source={{html: news?.attributes?.content}}
-                customHTMLElementModels={customHTMLElementModels}
-                // renderers={renderers}
-                tagsStyles={tagsStyles}
-                ignoredStyles={['height', 'width']}
-                enableExperimentalMarginCollapsing={true}
-              />
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <RenderHtml
+                  contentWidth={SCREEN_WIDTH * 0.7}
+                  source={{html: news?.attributes?.content}}
+                  customHTMLElementModels={customHTMLElementModels}
+                  tagsStyles={tagsStyles}
+                  ignoredStyles={['height', 'width']}
+                  enableExperimentalMarginCollapsing={true}
+                />
+              </ScrollView>
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </View>
-      <View
-        style={{
-          height: 40,
-          marginTop: 8,
-          marginBottom: 8,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignSelf: 'flex-end',
-          alignItems: 'flex-end',
-        }}>
-        <TouchableOpacity style={styles.button} onPress={onShare}>
-          <Ionicons name="md-share-social" color={color.primary} size={26} />
-        </TouchableOpacity>
-        <View style={styles.button}>
-          <Ionicons name="bookmarks-outline" color={color.primary} size={26} />
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            openBottomSheet({
-              type: SheetOptions.CUSTOM_LIST,
-              selectOptions: [
-                {label: 'Like', icon: 'like1'},
-                {label: 'Unlike', icon: 'dislike1'},
-                {label: 'Report', icon: 'questioncircle'},
-              ],
-              onPressItem: option => {
-                console.log('optionn', option);
-              },
-              value: 'Take Image',
-              snaps: ['20%', height / 4],
-              itemLayout: ({
-                item: {label, icon},
-                index,
-                callback,
-                closeBottomSheet,
-              }) => {
-                return (
-                  <TouchableOpacity
-                    style={styles.customListItem(index % 2)}
-                    key={index.toString()}
-                    onPress={() => {
-                      callback.current(label);
-                      closeBottomSheet();
-                    }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}>
-                      <AntDesign name={icon} color={color.primary} size={24} />
-                      <Text style={styles.title}>{label}</Text>
-                    </View>
-                  </TouchableOpacity>
-                );
-              },
-            });
-          }}>
-          <Ionicons name="ellipsis-vertical" color={color.primary} size={26} />
-        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  overlay: {
-    // backgroundColor: 'white',
-    borderColor: 'black',
-    borderWidth: 2,
-    borderRadius: 10,
-    width: SCREEN_WIDTH - 10,
-    padding: 10,
-    height: 'auto',
-  },
   card: {
     backgroundColor: '#5e5858',
     borderRadius: 10,
@@ -224,7 +148,7 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     zIndex: 1,
     color: 'white',
-    // height: 'auto',
+    height: CARD_HEIGHT,
 
     overflow: 'hidden',
   },

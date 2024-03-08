@@ -1,14 +1,19 @@
 import React from 'react';
-import {StyleSheet, Dimensions, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {defaultValues} from '../../constants/defaultValues';
 import {color} from '../../theme';
 import {Button, Text} from '../../ui';
 import {BottomMessage} from './BottomMessage';
 import {Footer} from './Footer';
-
+import logo from '../../ui/Images/logo.webp';
 const {width} = Dimensions.get('window');
 import {authorize} from 'react-native-app-auth';
-
 const config = {
   issuer: 'http://13.234.108.242:31709/realms/learn',
   clientId: 'learn-app',
@@ -88,6 +93,12 @@ export const Screen1 = ({
           }}>
           {defaultValues.onBoardDescription2}
         </Text>
+        <Image
+          source={{
+            uri: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzIzM21jcm9td2JneWlpdjBxdHFudWtrOXF6aWtraW45MHN3endvaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/I0g3jREJnV4gaGTZlx/giphy.gif',
+          }}
+          style={{width: 200, height: 200, marginLeft: '20%'}}
+        />
       </View>
       <View style={styles.bottomView}>
         <Button

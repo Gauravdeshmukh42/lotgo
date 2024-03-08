@@ -1,12 +1,12 @@
-import React, { useRef, useState, useCallback, memo } from "react";
-import { useContext } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import React, {useRef, useState, useCallback, memo} from 'react';
+import {useContext} from 'react';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 
-import { Text } from "../ui";
-import { color } from "../theme";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import isNumber from "lodash/isNumber";
-import { useBackHandler } from "@react-native-community/hooks";
+import {Button, Text} from '../ui';
+import {color} from '../theme';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import isNumber from 'lodash/isNumber';
+import {useBackHandler} from '@react-native-community/hooks';
 
 import {
   BottomSheetFlatList,
@@ -14,11 +14,14 @@ import {
   BottomSheetModalProvider,
   BottomSheetScrollView,
   BottomSheetBackdrop,
-} from "@gorhom/bottom-sheet";
+  BottomSheetTextInput,
+} from '@gorhom/bottom-sheet';
+import {set} from 'ramda';
 
 export const SheetOptions = {
-  SELECT: "SELECT",
-  CUSTOM_LIST: "CUSTOM_LIST",
+  SELECT: 'SELECT',
+  CUSTOM_LIST: 'CUSTOM_LIST',
+  CREATE_COLLECTION: 'CREATE_COLLECTION',
 };
 
 export const BottomSheetContext = React.createContext(() => {});
@@ -31,13 +34,13 @@ export function SelectBox({
   currentValue,
   disableIndex,
 }) {
-  function renderItem({ item, index }) {
+  function renderItem({item, index}) {
     const isEnabled = disableIndex - 1 === index || !isNumber(disableIndex);
     const isSelected = currentValue === item;
     return (
       <TouchableOpacity
-        rippleColor={"#F5F5F5"} // For android
-        underlayColor={"#F5F5F5"} // For iOS
+        rippleColor={'#F5F5F5'} // For android
+        underlayColor={'#F5F5F5'} // For iOS
         key={index}
         activeOpacity={isEnabled ? 0.5 : 1}
         style={styles.itemContainer}
@@ -46,8 +49,7 @@ export function SelectBox({
             closeBottomSheet();
             callback(item);
           }
-        }}
-      >
+        }}>
         <Text numberOfLines={3} style={styles.itemLabel(isSelected, isEnabled)}>
           {item}
         </Text>
@@ -84,14 +86,40 @@ export function CUSTOM_LIST({
     <>
       <BottomSheetScrollView style={styles.listContainer}>
         {options.map((item, index) =>
-          renderItem({ item, index, callback, closeBottomSheet })
+          renderItem({item, index, callback, closeBottomSheet}),
         )}
       </BottomSheetScrollView>
     </>
   );
 }
+export function CREATE_COLLECTION({callback, closeBottomSheet}) {
+  const [collectionName, setCollectionName] = useState('');
+  return (
+    <>
+      <Text style={styles.header}>Create new collection</Text>
+      <BottomSheetTextInput
+        placeholder="Enter collection name"
+        accessibilityComponentType
+        accessibilityTraits
+        value={collectionName}
+        onChangeText={e => {
+          setCollectionName(e);
+        }}
+        style={styles.input}
+      />
+      <Button
+        style={styles.button}
+        onPress={() => {
+          callback.current(collectionName);
+          closeBottomSheet();
+        }}>
+        <Text>Submit</Text>
+      </Button>
+    </>
+  );
+}
 
-export const BottomSheetProvider = memo(({ children }) => {
+export const BottomSheetProvider = memo(({children}) => {
   const sheetRef = useRef(null);
   const onSelectCb = useRef(() => {});
   const onSelectPaypal = useRef(() => {});
@@ -102,7 +130,7 @@ export const BottomSheetProvider = memo(({ children }) => {
   const disableInd = useRef(null);
   const sheetHeaderTitle = useRef(null);
   const renderCustomListLayout = useRef(() => null);
-  const [blur, setBlur] = React.useState("restore");
+  const [blur, setBlur] = React.useState('restore');
 
   const [bottomSheetConfig, setBottomSheetConfig] = useState({
     snaps: [0, 0, 0],
@@ -112,7 +140,7 @@ export const BottomSheetProvider = memo(({ children }) => {
   });
 
   const openBottomSheet = ({
-    type = "SELECT",
+    type = 'SELECT',
     selectOptions = [],
     sortSelectOptions = [],
     onPressItem,
@@ -122,12 +150,12 @@ export const BottomSheetProvider = memo(({ children }) => {
     sortValue,
     onBlur,
     disableIndex,
-    snaps = [0, "30%"],
+    snaps = [0, '30%'],
     canScroll = true,
     headerTitle,
     itemLayout = () => null,
   }) => {
-    console.log("OPENING", sheetRef.current);
+    console.log('OPENING', sheetRef.current);
     setBottomSheetConfig({
       type,
       snaps,
@@ -135,7 +163,7 @@ export const BottomSheetProvider = memo(({ children }) => {
       sortSelectOptions,
       canScroll,
     });
-    setBlur("restore");
+    setBlur('restore');
 
     sheetRef.current?.present();
     onSelectCb.current = onPressItem;
@@ -150,7 +178,7 @@ export const BottomSheetProvider = memo(({ children }) => {
   };
 
   const closeBottomSheet = (navigation = null) => {
-    setBlur("none");
+    setBlur('none');
     sheetRef.current?.close();
     if (navigation) {
       navigation.goBack();
@@ -162,7 +190,7 @@ export const BottomSheetProvider = memo(({ children }) => {
       case SheetOptions.SELECT:
         return (
           <SelectBox
-            {...{ closeBottomSheet, options: bottomSheetConfig.selectOptions }}
+            {...{closeBottomSheet, options: bottomSheetConfig.selectOptions}}
             callback={onSelectCb.current}
             currentValue={currentValue.current}
             disableIndex={disableInd.current}
@@ -178,6 +206,15 @@ export const BottomSheetProvider = memo(({ children }) => {
             }}
             callback={onSelectCb}
             currentValues={currentValue}
+          />
+        );
+      case SheetOptions.CREATE_COLLECTION:
+        return (
+          <CREATE_COLLECTION
+            {...{
+              closeBottomSheet,
+            }}
+            callback={onSelectCb}
           />
         );
       default:
@@ -204,13 +241,13 @@ export const BottomSheetProvider = memo(({ children }) => {
   };
 
   // callbacks
-  const handleSheetChange = (index) => {
+  const handleSheetChange = index => {
     // if (navigationType !== 'NEXT_SCREEN' && index === -1) {
     //   RootNavigation.goBack();
     // }
     // setNavigationType('');
   };
-  const renderBackdrop = useCallback((props) => {
+  const renderBackdrop = useCallback(props => {
     useBackHandler(() => {
       closeBottomSheet();
       return true;
@@ -226,7 +263,7 @@ export const BottomSheetProvider = memo(({ children }) => {
   }, []);
 
   return (
-    <BottomSheetContext.Provider value={{ openBottomSheet, closeBottomSheet }}>
+    <BottomSheetContext.Provider value={{openBottomSheet, closeBottomSheet}}>
       <GestureHandlerRootView style={styles.container}>
         {children}
         <BottomSheetModalProvider>
@@ -240,8 +277,7 @@ export const BottomSheetProvider = memo(({ children }) => {
             keyboardBlurBehavior={blur}
             backdropComponent={renderBackdrop}
             enablePanDownToClose
-            dis
-          >
+            dis>
             {renderHeader()}
             {renderContent()}
           </BottomSheetModal>
@@ -253,8 +289,8 @@ export const BottomSheetProvider = memo(({ children }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    height: "100%",
+    backgroundColor: '#fff',
+    height: '100%',
   },
   contentContainerStyle: {
     paddingTop: 15,
@@ -264,20 +300,37 @@ const styles = StyleSheet.create({
   },
   itemLabel: (isSelected, isEnabled) => ({
     fontSize: 16,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 10,
     color: isSelected
       ? color.palette.black
       : isEnabled
-      ? "grey"
-      : color.palette.red,
+        ? 'grey'
+        : color.palette.red,
   }),
   itemContainer: {
-    width: "100%",
-    justifyContent: "center",
+    width: '100%',
+    justifyContent: 'center',
     padding: 2,
   },
   listContainer: {
     flex: 1,
+  },
+  input: {
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 10,
+    color: 'black',
+    margin: 20,
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+    alignSelf: 'center',
+  },
+  button: {
+    width: '50%',
+    alignSelf: 'center',
   },
 });

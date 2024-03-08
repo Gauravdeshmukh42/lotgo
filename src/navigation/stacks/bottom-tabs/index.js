@@ -14,6 +14,7 @@ import {AccountStack} from './account-stack';
 import {TargetStack} from './target-stack';
 import {Text} from '../../../ui';
 import {ExploreStack} from './explore-stack';
+import {BookmarkStack} from './bookmark-stack';
 const {width, height} = Dimensions.get('window');
 const BottomTabs = createBottomTabNavigator();
 
@@ -81,25 +82,8 @@ export const BottomTabsStack = () => {
           }}
         />
         <BottomTabs.Screen
-          name={Routes.EXPLORE_STACK}
-          component={ExploreStack}
-          options={{
-            unmountOnBlur: true,
-            title: 'Explore',
-            tabBarIcon: ({focused}) => {
-              return (
-                <Ionicons
-                  name="md-apps-outline"
-                  color={focused ? color.primary : '#8F8F8F'}
-                  size={26}
-                />
-              );
-            },
-          }}
-        />
-        <BottomTabs.Screen
-          name={Routes.TARGET_STACK}
-          component={TargetStack}
+          name={Routes.BOTTOM_TAB_STACK}
+          component={BookmarkStack}
           options={{
             unmountOnBlur: true,
             title: 'Bookmark',
@@ -114,6 +98,24 @@ export const BottomTabsStack = () => {
             },
           }}
         />
+        <BottomTabs.Screen
+          name={Routes.EXPLORE_STACK}
+          component={ExploreStack}
+          options={{
+            unmountOnBlur: true,
+            title: 'Profile',
+            tabBarIcon: ({focused}) => {
+              return (
+                <Ionicons
+                  name="person-outline"
+                  color={focused ? color.primary : '#8F8F8F'}
+                  size={26}
+                />
+              );
+            },
+          }}
+        />
+
         {/* <BottomTabs.Screen
           name={Routes.ACCOUNT_STACK}
           component={AccountStack}
@@ -136,7 +138,7 @@ export const BottomTabsStack = () => {
     // </NavigationContainer>
   );
 };
-
+console.log('Tab bar height : ', BottomTabs.Navigator.height);
 export const styles = StyleSheet.create({
   tabContainer: {
     width: 24,

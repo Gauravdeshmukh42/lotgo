@@ -21,7 +21,7 @@ export function DashboardStack() {
           headerBackTitle: "",
           headerTitle: "",
           headerTransparent: true,
-          headerTintColor: "white",
+          headerTintColor: "black",
         }}
       />
     </Stack.Navigator>
