@@ -32,9 +32,12 @@ const Routes = {
       ...{
         TARGET_SCREEN: 'Target Screen',
       },
-      BOOKMARK_STACK: 'BOOKMARK Stack',
       ...{
-        BOOKMARK_SCREEN: 'Bookmark Screen',
+        BOOKMARK_STACK: 'BOOKMARK Stack',
+        ...{
+          BOOKMARK_SCREEN: 'Bookmark Screen',
+          DETAILS_SCREEN: 'Details Screen',
+        },
       },
     },
   },

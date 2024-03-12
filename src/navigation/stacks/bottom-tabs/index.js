@@ -82,7 +82,7 @@ export const BottomTabsStack = () => {
           }}
         />
         <BottomTabs.Screen
-          name={Routes.BOTTOM_TAB_STACK}
+          name={Routes.BOOKMARK_STACK}
           component={BookmarkStack}
           options={{
             unmountOnBlur: true,

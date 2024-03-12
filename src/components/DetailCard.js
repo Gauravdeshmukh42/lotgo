@@ -72,7 +72,7 @@ export const DetailCard = ({news, cardIndex}) => {
 
   const tagsStyles = {
     p: {
-      color: 'white',
+      color: 'black',
     },
     button: {
       width: 90,
@@ -92,38 +92,24 @@ export const DetailCard = ({news, cardIndex}) => {
       <View>
         <Text style={styles.header}>{news?.attributes?.title ?? ''}</Text>
       </View>
-      <View style={{flex: 1}}>
-        <TouchableWithoutFeedback
-          style={{flex: 1}}
-          onPress={() => {
-            news.attributes.more_content
-              ? navigation.navigate(Routes.CARD_DETAILS_SCREEN, {
-                  cardDetails: news,
-                })
-              : null;
-          }}>
-          <View
-            style={{
-              //   borderColor: 'green',
-              //   borderWidth: 5,
-              overflow: 'hidden',
-              alignItems: 'center',
-              flex: 1,
-            }}>
-            <View>
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <RenderHtml
-                  contentWidth={SCREEN_WIDTH * 0.7}
-                  source={{html: news?.attributes?.content}}
-                  customHTMLElementModels={customHTMLElementModels}
-                  tagsStyles={tagsStyles}
-                  ignoredStyles={['height', 'width']}
-                  enableExperimentalMarginCollapsing={true}
-                />
-              </ScrollView>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
+
+      <View
+        style={{
+          // borderColor: 'green',
+          // borderWidth: 5,
+          // height: 'auto',
+          alignItems: 'center',
+        }}>
+        <View>
+          <RenderHtml
+            contentWidth={SCREEN_WIDTH * 0.7}
+            source={{html: news?.attributes?.content}}
+            customHTMLElementModels={customHTMLElementModels}
+            tagsStyles={tagsStyles}
+            ignoredStyles={['height', 'width']}
+            enableExperimentalMarginCollapsing={true}
+          />
+        </View>
       </View>
     </View>
   );
@@ -148,9 +134,8 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     zIndex: 1,
     color: 'white',
-    height: CARD_HEIGHT,
-
     overflow: 'hidden',
+    // height: 'auto',
   },
   header: {
     // margin: 10,

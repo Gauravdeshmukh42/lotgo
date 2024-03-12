@@ -1,13 +1,11 @@
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import React from 'react';
 const {height, width} = Dimensions.get('window');
-import SmoothSwiperRoot from '../../components/common/SmoothSwiper';
-import Swiper from '../../components/common/Swiper';
-import {Card} from '../../components/Card';
 import {useState} from 'react';
 import {Screen} from '../../ui';
-import {ScrollView} from 'react-native-gesture-handler';
+import Swiper from '../../components/common/Swiper';
 import {DetailCard} from '../../components/DetailCard';
+import HorizontalSwiperRoot from '../../components/common/HorizontalSwiper';
 const DetailsScreen = ({navigation, route}) => {
   const [cardIndex, setCardIndex] = useState(0);
   const onSwipedTop = index => {
@@ -21,18 +19,7 @@ const DetailsScreen = ({navigation, route}) => {
     <Screen variant={'scroll'}>
       <View style={styles.container}>
         {details?.attributes?.more_content ? (
-          // <SmoothSwiperRoot data={details?.attributes?.more_content} />
-          <Swiper
-            data={details.attributes.more_content}
-            cardIndex={cardIndex}
-            renderCard={news => (
-              <ScrollView>
-                <DetailCard news={news} cardIndex={cardIndex} />
-              </ScrollView>
-            )}
-            onSwipedTop={index => onSwipedTop(index)}
-            onSwipedBottom={index => onSwipedBottom(index)}
-          />
+          <HorizontalSwiperRoot data={details.attributes.more_content} />
         ) : (
           <View style={styles.noData}>
             <Text>No Data Available</Text>
@@ -45,6 +32,10 @@ const DetailsScreen = ({navigation, route}) => {
 
 export default DetailsScreen;
 const styles = StyleSheet.create({
+  cardContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

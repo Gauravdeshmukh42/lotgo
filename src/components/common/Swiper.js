@@ -9,6 +9,8 @@ import {
   ScrollView,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
+import {useState} from 'react';
+import {Screen} from '../../ui';
 const {height} = Dimensions.get('screen');
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const INPUT_RANGE = [-height, 0, height];
@@ -36,6 +38,7 @@ export default function Swiper({
   onSwipedTop,
   onSwipedBottom,
 }) {
+  const [cardHeight, setCardHeight] = useState();
   const pan = useRef(new Animated.ValueXY()).current;
   const swipeCardPosition = useRef(
     new Animated.ValueXY({
@@ -43,7 +46,7 @@ export default function Swiper({
       y: -SCREEN_HEIGHT - StatusBar.currentHeight,
     }),
   ).current;
-
+  console.log('CardHeight', cardHeight);
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponderCapture: () => true,
     onPanResponderMove: (_, gestureState) => {
@@ -148,6 +151,10 @@ export default function Swiper({
               <Animated.View
                 key={index}
                 {...panResponder.panHandlers}
+                onLayout={event => {
+                  const {height} = event.nativeEvent.layout;
+                  setCardHeight(height);
+                }}
                 style={[
                   styles.container,
                   {

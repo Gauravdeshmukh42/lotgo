@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -24,6 +24,9 @@ import RenderHtml, {
   useInternalRenderer,
 } from 'react-native-render-html';
 import {getFormatedImageUrl} from '../utils/imageUrlManipulation';
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {addBookmark, removeBookmark} from '../redux/slices';
 const screenWidth = width;
 const CustomImageRenderer = props => {
   const {Renderer, rendererProps} = useInternalRenderer('img', props);
@@ -38,6 +41,8 @@ const CustomImageRenderer = props => {
 export const Card = ({news, cardIndex}) => {
   const {openBottomSheet} = useBottomSheet();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {collection} = useSelector(state => state.bookmark);
   const {width, height} = useWindowDimensions();
   const onShare = async () => {
     try {
@@ -94,6 +99,19 @@ export const Card = ({news, cardIndex}) => {
       objectFit: 'contain',
     },
   };
+  const selectOptions = collection.map(item => ({
+    label: item.name,
+    icon: 'plus',
+    id: item.id,
+  }));
+
+  const isBookmarked = collection.some(item =>
+    item.bookmarks.some(
+      bookmark => bookmark.attributes.title === news.attributes.title,
+    ),
+  );
+
+  // console.log('Bookmark', isBookmarked);
   return (
     <View style={[styles.card, {width: screenWidth - 30}]}>
       <View>
@@ -144,9 +162,79 @@ export const Card = ({news, cardIndex}) => {
         <TouchableOpacity style={styles.button} onPress={onShare}>
           <Ionicons name="md-share-social" color={color.primary} size={26} />
         </TouchableOpacity>
-        <View style={styles.button}>
-          <Ionicons name="bookmarks-outline" color={color.primary} size={26} />
-        </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            if (!isBookmarked) {
+              openBottomSheet({
+                type: SheetOptions.CUSTOM_LIST,
+                selectOptions,
+                onPressItem: option => {
+                  const newBookmark = {
+                    id: collection.length + 1,
+                    attributes: {
+                      title: news.attributes.title,
+                      content: news.attributes.content,
+                    },
+                  };
+                  dispatch(
+                    addBookmark({collectionId: option, bookmark: newBookmark}),
+                  );
+                },
+                value: 'Take Image',
+                snaps: ['20%', height / 4],
+                itemLayout: ({
+                  item: {label, icon, id},
+                  index,
+                  callback,
+                  closeBottomSheet,
+                }) => {
+                  return (
+                    <TouchableOpacity
+                      style={styles.customListItem(index % 2)}
+                      key={index.toString()}
+                      onPress={() => {
+                        callback.current(label);
+                        closeBottomSheet();
+                      }}>
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
+                        <AntDesign
+                          name={icon}
+                          color={color.primary}
+                          size={24}
+                        />
+                        <Text style={styles.title}>{label}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                },
+              });
+            } else {
+              const collectionID = collection.find(item =>
+                item.bookmarks.some(
+                  bookmark =>
+                    bookmark.attributes.title === news.attributes.title,
+                ),
+              ).id;
+              dispatch(
+                removeBookmark({
+                  collectionId: collectionID,
+                  bookmarkTitle: news.attributes.title,
+                }),
+              );
+            }
+          }}>
+          <Ionicons
+            name={isBookmarked ? 'bookmarks' : 'bookmarks-outline'}
+            color={color.primary}
+            size={26}
+          />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             openBottomSheet({
