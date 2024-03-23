@@ -1,14 +1,19 @@
 import React from 'react';
-import {StyleSheet, Dimensions, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {defaultValues} from '../../constants/defaultValues';
 import {color} from '../../theme';
 import {Button, Text} from '../../ui';
 import {BottomMessage} from './BottomMessage';
 import {Footer} from './Footer';
-
+import logo from '../../ui/Images/logo.webp';
 const {width} = Dimensions.get('window');
 import {authorize} from 'react-native-app-auth';
-
 const config = {
   issuer: 'http://13.234.108.242:31709/realms/learn',
   clientId: 'learn-app',
@@ -43,10 +48,10 @@ export const Screen1 = ({
               fontSize: 16,
               textTransform: 'capitalize',
             }}>
-            {defaultValues.loginButtonText}
+            {/* {defaultValues.loginButtonText} */}
           </Text>
         </TouchableOpacity>
-        <Text
+        {/* <Text
           style={{
             color: color.palette.black,
             fontSize: 16,
@@ -54,11 +59,11 @@ export const Screen1 = ({
             marginTop: 20,
           }}>
           Lotgo
-        </Text>
+        </Text> */}
         <Text
           style={{
             color: color.palette.black,
-            fontSize: 30,
+            fontSize: 60,
             marginLeft: 15,
             marginTop: 50,
             alignContent: 'center',
@@ -66,15 +71,43 @@ export const Screen1 = ({
           }}>
           {defaultValues.onBoardScreenTitle}
         </Text>
+        <Text
+          style={{
+            color: color.palette.black,
+            fontSize: 30,
+            marginLeft: 15,
+            marginTop: 15,
+            alignContent: 'center',
+            textTransform: 'capitalize',
+          }}>
+          {defaultValues.onBoardDescription}
+        </Text>
+        <Text
+          style={{
+            color: color.palette.black,
+            fontSize: 30,
+            marginLeft: 15,
+            // marginTop: 5,
+            alignContent: 'center',
+            textTransform: 'capitalize',
+          }}>
+          {defaultValues.onBoardDescription2}
+        </Text>
+        <Image
+          source={{
+            uri: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzIzM21jcm9td2JneWlpdjBxdHFudWtrOXF6aWtraW45MHN3endvaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/I0g3jREJnV4gaGTZlx/giphy.gif',
+          }}
+          style={{width: 200, height: 200, marginLeft: '20%'}}
+        />
       </View>
       <View style={styles.bottomView}>
         <Button
           title={defaultValues.continueButtonText}
           style={[
             {
-              width: '50%',
+              width: '80%',
               height: 50,
-              borderRadius: 5,
+              borderRadius: 10,
               // backgroundColor: "#fff",
               justifyContent: 'center',
               alignItems: 'center',
@@ -83,7 +116,7 @@ export const Screen1 = ({
           onPress={goToNextSlide}
           textStyle={{
             color: color.palette.white,
-            fontSize: 16,
+            fontSize: 20,
             textTransform: 'capitalize',
           }}
         />
@@ -105,7 +138,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    padding: 2,
+    padding: 5,
   },
   message: {
     marginTop: '5%',

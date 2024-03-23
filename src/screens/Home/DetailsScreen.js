@@ -1,46 +1,30 @@
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
-import React from "react";
-import { Screen } from "../../ui";
-const { width } = Dimensions.get("window");
-const screenHeight = Math.round((width * 9) / 16);
-import RenderHtml, {
-  defaultHTMLElementModels,
-  HTMLContentModel,
-} from "react-native-render-html";
-const DetailsScreen = ({ navigation, route }) => {
-  const customHTMLElementModels = {
-    label: defaultHTMLElementModels.label.extend({
-      contentModel: HTMLContentModel.block,
-    }),
-    input: defaultHTMLElementModels.input.extend({
-      contentModel: HTMLContentModel.block,
-    }),
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import React from 'react';
+const {height, width} = Dimensions.get('window');
+import {useState} from 'react';
+import {Screen} from '../../ui';
+import Swiper from '../../components/common/Swiper';
+import {DetailCard} from '../../components/DetailCard';
+import HorizontalSwiperRoot from '../../components/common/HorizontalSwiper';
+const DetailsScreen = ({navigation, route}) => {
+  const [cardIndex, setCardIndex] = useState(0);
+  const onSwipedTop = index => {
+    setCardIndex(index + 1);
+  };
+  const onSwipedBottom = index => {
+    setCardIndex(index - 1);
   };
   const details = route.params.cardDetails;
   return (
-    <Screen variant={"scroll"}>
-      <View activeOpacity={1} style={[styles.card]}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.header}>{details?.attributes?.title ?? ""}</Text>
-          {/* {details?.photo && (
-            <Image
-              source={details.photo}
-              style={{
-                height: screenHeight,
-                resizeMode: "cover",
-                width: width,
-              }}
-            />
-          )}
-          <Text style={styles.abstract}>
-            {details?.attributes?.details ?? ""}
-          </Text> */}
-          <RenderHtml
-            contentWidth={width}
-            source={{ html: details?.attributes?.more_content }}
-            customHTMLElementModels={customHTMLElementModels}
-          />
-        </View>
+    <Screen variant={'scroll'}>
+      <View style={styles.container}>
+        {details?.attributes?.more_content ? (
+          <HorizontalSwiperRoot data={details.attributes.more_content} />
+        ) : (
+          <View style={styles.noData}>
+            <Text>No Data Available</Text>
+          </View>
+        )}
       </View>
     </Screen>
   );
@@ -48,10 +32,19 @@ const DetailsScreen = ({ navigation, route }) => {
 
 export default DetailsScreen;
 const styles = StyleSheet.create({
+  cardContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
   card: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 5,
-    shadowColor: "black",
+    shadowColor: 'black',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -62,17 +55,28 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     paddingBottom: 15,
+    alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 5,
+    padding: 10,
+  },
+  details: {
+    flex: 1,
+    borderColor: 'red',
+    borderWidth: 5,
+    width: width - 30,
+    alignItems: 'center',
   },
   header: {
     margin: 10,
-    fontWeight: "bold",
-    color: "black",
+    fontWeight: 'bold',
+    color: 'black',
     fontSize: 20,
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
   },
   abstract: {
     margin: 10,
-    color: "black",
+    color: 'black',
     fontSize: 16,
   },
 });

@@ -54,6 +54,7 @@ export const Screen5 = ({ goToPreviousSlide }) => {
           onPress={() => {
             // save(ONBOARDING_SCREEN, true);
             navigation.replace(Routes.INSIDE_STACK);
+            // navigation.replace(Routes.MAIN_STACK)
           }}
           textStyle={{
             fontWeight: "bold",

@@ -7,7 +7,7 @@ export function BottomMessage() {
   return (
     <>
       <Text style={styles.text}>
-        By continuing you accept
+        By continuing you accept 
         <Text
           style={styles.textLink}
           onPress={() => {
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     color: color.palette.warmGrey,
     // textAlign: "center",
     fontSize: 14,
+    padding:5,
   },
   textLink: {
     color: color.primary,

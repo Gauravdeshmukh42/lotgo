@@ -14,6 +14,7 @@ import {AccountStack} from './account-stack';
 import {TargetStack} from './target-stack';
 import {Text} from '../../../ui';
 import {ExploreStack} from './explore-stack';
+import {BookmarkStack} from './bookmark-stack';
 const {width, height} = Dimensions.get('window');
 const BottomTabs = createBottomTabNavigator();
 
@@ -68,11 +69,28 @@ export const BottomTabsStack = () => {
           component={DashboardStack}
           options={{
             unmountOnBlur: true,
-            title: 'Home',
+            title: '',
             tabBarIcon: ({focused}) => {
               return (
                 <Ionicons
-                  name="ios-home"
+                  name={focused ? 'home' : 'home-outline'}
+                  color={focused ? color.primary : '#8F8F8F'}
+                  size={26}
+                />
+              );
+            },
+          }}
+        />
+        <BottomTabs.Screen
+          name={Routes.BOOKMARK_STACK}
+          component={BookmarkStack}
+          options={{
+            unmountOnBlur: true,
+            title: '',
+            tabBarIcon: ({focused}) => {
+              return (
+                <Ionicons
+                  name={focused ? 'bookmark' : 'bookmark-outline'}
                   color={focused ? color.primary : '#8F8F8F'}
                   size={26}
                 />
@@ -85,11 +103,11 @@ export const BottomTabsStack = () => {
           component={ExploreStack}
           options={{
             unmountOnBlur: true,
-            title: 'Explore',
+            title: '',
             tabBarIcon: ({focused}) => {
               return (
                 <Ionicons
-                  name="md-apps-outline"
+                  name={focused ? 'person' : 'person-outline'}
                   color={focused ? color.primary : '#8F8F8F'}
                   size={26}
                 />
@@ -97,24 +115,8 @@ export const BottomTabsStack = () => {
             },
           }}
         />
-        <BottomTabs.Screen
-          name={Routes.TARGET_STACK}
-          component={TargetStack}
-          options={{
-            unmountOnBlur: true,
-            title: 'Bookmark',
-            tabBarIcon: ({focused}) => {
-              return (
-                <Ionicons
-                  name="bookmark-outline"
-                  color={focused ? color.primary : '#8F8F8F'}
-                  size={26}
-                />
-              );
-            },
-          }}
-        />
-        <BottomTabs.Screen
+
+        {/* <BottomTabs.Screen
           name={Routes.ACCOUNT_STACK}
           component={AccountStack}
           options={{
@@ -130,13 +132,13 @@ export const BottomTabsStack = () => {
               );
             },
           }}
-        />
+        /> */}
       </BottomTabs.Navigator>
     </View>
     // </NavigationContainer>
   );
 };
-
+console.log('Tab bar height : ', BottomTabs.Navigator.height);
 export const styles = StyleSheet.create({
   tabContainer: {
     width: 24,

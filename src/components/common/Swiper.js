@@ -6,12 +6,14 @@ import {
   StyleSheet,
   View,
   StatusBar,
+  ScrollView,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
+import {useState} from 'react';
+import {Screen} from '../../ui';
 const {height} = Dimensions.get('screen');
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const INPUT_RANGE = [-height, 0, height];
-
 const getScaleStyles = responder =>
   responder.y.interpolate({
     inputRange: INPUT_RANGE,
@@ -28,6 +30,7 @@ const getTranslateYStyles = responder =>
 //     inputRange: [0, 0.5, 0.99],
 //     outputRange: [1, 0, 1],
 //   });
+
 export default function Swiper({
   data,
   renderCard,
@@ -35,14 +38,15 @@ export default function Swiper({
   onSwipedTop,
   onSwipedBottom,
 }) {
+  const [cardHeight, setCardHeight] = useState();
   const pan = useRef(new Animated.ValueXY()).current;
   const swipeCardPosition = useRef(
     new Animated.ValueXY({
       x: 0,
-      y: -SCREEN_HEIGHT - StatusBar.statusBarHeight,
+      y: -SCREEN_HEIGHT - StatusBar.currentHeight,
     }),
   ).current;
-
+  console.log('CardHeight', cardHeight);
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponderCapture: () => true,
     onPanResponderMove: (_, gestureState) => {
@@ -69,7 +73,7 @@ export default function Swiper({
       if (gestureState.dy > 0 && cardIndex > 0) {
         swipeCardPosition.setValue({
           x: 0,
-          y: -SCREEN_HEIGHT - StatusBar.statusBarHeight + gestureState.dy,
+          y: -SCREEN_HEIGHT - StatusBar.currentHeight + gestureState.dy,
         });
       } else {
         pan.setValue({
@@ -88,12 +92,12 @@ export default function Swiper({
           onSwipedBottom(cardIndex);
           swipeCardPosition.setValue({
             x: 0,
-            y: -SCREEN_HEIGHT - StatusBar.statusBarHeight,
+            y: -SCREEN_HEIGHT - StatusBar.currentHeight,
           });
         });
       } else if (cardIndex < data.length - 1 && -gestureState.dy > 50) {
         Animated.timing(pan, {
-          toValue: {x: 0, y: -SCREEN_HEIGHT - StatusBar.statusBarHeight},
+          toValue: {x: 0, y: -SCREEN_HEIGHT - StatusBar.currentHeight},
           duration: 200,
           useNativeDriver: true,
         }).start(() => {
@@ -107,7 +111,7 @@ export default function Swiper({
             useNativeDriver: true,
           }),
           Animated.spring(swipeCardPosition, {
-            toValue: {x: 0, y: -SCREEN_HEIGHT - StatusBar.statusBarHeight},
+            toValue: {x: 0, y: -SCREEN_HEIGHT - StatusBar.currentHeight},
             useNativeDriver: true,
           }),
         ]).start();
@@ -116,13 +120,9 @@ export default function Swiper({
   });
 
   const nextCardScale = getScaleStyles(pan);
-
   const nextCardTranslateY = getTranslateYStyles(pan);
-
   const currentCardScale = getScaleStyles(swipeCardPosition);
-
   const currentCardTranslateY = getTranslateYStyles(swipeCardPosition);
-
   return (
     <View style={{flex: 1}}>
       {data
@@ -151,6 +151,10 @@ export default function Swiper({
               <Animated.View
                 key={index}
                 {...panResponder.panHandlers}
+                onLayout={event => {
+                  const {height} = event.nativeEvent.layout;
+                  setCardHeight(height);
+                }}
                 style={[
                   styles.container,
                   {
@@ -196,5 +200,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
+    alignItems: 'center',
   },
 });

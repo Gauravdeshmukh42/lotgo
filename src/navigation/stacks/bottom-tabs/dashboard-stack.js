@@ -20,6 +20,8 @@ export function DashboardStack() {
         options={{
           headerBackTitle: "",
           headerTitle: "",
+          headerTransparent: true,
+          headerTintColor: "black",
         }}
       />
     </Stack.Navigator>

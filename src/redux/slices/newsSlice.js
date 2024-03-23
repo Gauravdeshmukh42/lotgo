@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from '@reduxjs/toolkit';
 // import { backgroundColors } from "../../theme";
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
 
 const newsSlice = createSlice({
   initialState,
-  name: "news",
+  name: 'news',
   reducers: {
     newsRequest(state) {
       state.isLoading = true;
