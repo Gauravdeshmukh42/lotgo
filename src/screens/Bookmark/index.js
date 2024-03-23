@@ -24,26 +24,11 @@ export const Bookmark = () => {
   const {openBottomSheet} = useBottomSheet();
   const {collection} = useSelector(state => state.bookmark);
   const dispatch = useDispatch();
-  const buttonAlert = post =>
-    Alert.alert('Alert', `Do you want to delete ${post.name}`, [
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-      {text: 'OK', onPress: () => dispatch(removeCollection(post.id))},
-    ]);
 
   return (
     <Screen variant={'scroll'}>
       <View style={styles.container}>
         <TouchableWithoutFeedback style={styles.icons}>
-          <Ionicons
-            name="search-outline"
-            size={30}
-            color="black"
-            style={{marginLeft: 5}}
-          />
-
           <Ionicons
             name="add-outline"
             size={30}
@@ -71,18 +56,12 @@ export const Bookmark = () => {
         <View style={styles.innerContainer}>
           {collection?.length > 0 ? (
             collection?.map((post, index) => {
-              return (
-                <BookmarkCard
-                  key={index}
-                  data={post}
-                  onLongPress={() => buttonAlert(post)}
-                />
-              );
+              return <BookmarkCard key={index} data={post} />;
             })
           ) : (
             <View>
               <Text style={[styles.header, {textAlign: 'center'}]}>
-                No Collections
+                {defaultValues.noCollectionText}
               </Text>
               <Image
                 source={{

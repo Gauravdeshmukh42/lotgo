@@ -2,19 +2,14 @@ const posts = [
   {
     attributes: {
       title: 'React Essentials in 5 minutes',
-      content: `
-          <img
-            src="https://shorturl.at/bisyL"
-            alt="react image"
-            />
-            <p>React Essentials in 5 minutes</p>`,
+      content: '<img src="https://shorturl.ac/7de1z" alt="react image"/>',
       more_content: [
         {
           attributes: {
             title: 'React Essentails in 5 minutes',
             content: `
             <img
-            src="https://shorturl.at/bisyL"
+            src="https://shorturl.ac/7de1z"
             alt="react image"
             />
             <h1>React Essentials in 5 minutes</h1><p>Learn about some of the most important
@@ -68,7 +63,7 @@ const posts = [
             title: 'Components',
             content: `
               <img
-              src="https://shorturl.at/bisyL"
+              src="https://shorturl.ac/7de1h"
               />
               <h1>Components in React </h1>
               <p>Learn about some of the most important
@@ -134,7 +129,7 @@ const posts = [
   {
     attributes: {
       title: 'Sample News Title 2',
-      content: '<p>This is some sample content for the news item.</p>',
+      content: '<img src="https://shorturl.ac/7de1h" alt="react image"/>',
       more_content: [
         {
           attributes: {
@@ -207,7 +202,7 @@ const posts = [
   {
     attributes: {
       title: 'Sample News Title 3',
-      content: '<p>This is some sample content for the news item.</p>',
+      content: '<img src="https://rb.gy/dsdpi9" alt="react image"/>',
       more_content: [
         {
           attributes: {
@@ -228,7 +223,7 @@ const posts = [
   {
     attributes: {
       title: 'Sample News Title 4',
-      content: '<p>This is some sample content for the news item.</p>',
+      content: '<img src="https://rb.gy/p8i5gq" alt="react image"/>',
       more_content: [
         {
           attributes: {

@@ -54,9 +54,13 @@ const CardItem = ({item}) => {
       color: 'black',
     },
     img: {
+      margin:2,
       width: SCREEN_WIDTH - 50,
-      height: SCREEN_HEIGHT / 3,
-      resizeMode: 'contain',
+      height: SCREEN_HEIGHT * 0.3,
+      resizeMode: 'cover',
+      borderRadius:5,
+      // borderColor: 'black',
+      // borderWidth: 5,
     },
   };
   // console.log('Item', item);
@@ -79,11 +83,9 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH - 20,
     backgroundColor: '#f8f9fc',
     marginHorizontal: (SCREEN_WIDTH - (SCREEN_WIDTH - 20)) / 2,
-    height: CARD_HEIGHT - STATUSBAR_HEIGHT + OFFSET,
+    height: CARD_HEIGHT,
     borderRadius: 12,
-    // paddingVertical: 10,
     paddingHorizontal: 4,
-    // marginVertical: 10,
   },
 });
 export default React.memo(HorizontalSwiperCard);

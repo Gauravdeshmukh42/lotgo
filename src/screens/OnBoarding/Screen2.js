@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
   categoryList: {
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     // overflow: 'scroll',
   },
 });

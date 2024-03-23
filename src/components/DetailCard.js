@@ -65,9 +65,6 @@ export const DetailCard = ({news, cardIndex}) => {
     button: defaultHTMLElementModels.button.extend({
       contentModel: HTMLContentModel.block,
     }),
-    img: defaultHTMLElementModels.img.extend({
-      contentModel: HTMLContentModel.block,
-    }),
   };
 
   const tagsStyles = {
@@ -84,7 +81,7 @@ export const DetailCard = ({news, cardIndex}) => {
     img: {
       height: 50,
       width: 50,
-      objectFit: 'contain',
+      objectFit: 'cover',
     },
   };
   return (

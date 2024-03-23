@@ -7,18 +7,15 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import {FlatList} from 'react-native-gesture-handler';
 import Routes from '../../navigation/routes';
+import {defaultValues} from '../../constants/defaultValues';
 const {width} = Dimensions.get('window');
 
-const BookmarkCard = ({data, onLongPress}) => {
+const BookmarkCard = ({data}) => {
   const navigation = useNavigation();
-  // const noOfBookmarks=
-  // console.log('BookmarkCard', data);
 
   return (
     <TouchableWithoutFeedback
-      onLongPress={onLongPress}
       onPress={() => {
         navigation.navigate(Routes.DETAILS_SCREEN, {
           currentCollectionID: data.id,
@@ -37,7 +34,7 @@ const BookmarkCard = ({data, onLongPress}) => {
           ) : (
             <View>
               <Text style={[styles.header, {textAlign: 'center'}]}>
-                No Bookmarks
+                {defaultValues.noBookmarkText}
               </Text>
             </View>
           )}

@@ -69,11 +69,11 @@ export const BottomTabsStack = () => {
           component={DashboardStack}
           options={{
             unmountOnBlur: true,
-            title: 'Home',
+            title: '',
             tabBarIcon: ({focused}) => {
               return (
                 <Ionicons
-                  name="ios-home"
+                  name={focused ? 'home' : 'home-outline'}
                   color={focused ? color.primary : '#8F8F8F'}
                   size={26}
                 />
@@ -86,11 +86,11 @@ export const BottomTabsStack = () => {
           component={BookmarkStack}
           options={{
             unmountOnBlur: true,
-            title: 'Bookmark',
+            title: '',
             tabBarIcon: ({focused}) => {
               return (
                 <Ionicons
-                  name="bookmark-outline"
+                  name={focused ? 'bookmark' : 'bookmark-outline'}
                   color={focused ? color.primary : '#8F8F8F'}
                   size={26}
                 />
@@ -103,11 +103,11 @@ export const BottomTabsStack = () => {
           component={ExploreStack}
           options={{
             unmountOnBlur: true,
-            title: 'Profile',
+            title: '',
             tabBarIcon: ({focused}) => {
               return (
                 <Ionicons
-                  name="person-outline"
+                  name={focused ? 'person' : 'person-outline'}
                   color={focused ? color.primary : '#8F8F8F'}
                   size={26}
                 />

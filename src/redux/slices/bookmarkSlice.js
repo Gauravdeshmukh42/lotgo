@@ -1,9 +1,9 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, current} from '@reduxjs/toolkit';
 const initialState = {
   collection: [
     {
       id: 1,
-      name: 'Collection 1',
+      name: 'See Later',
       bookmarks: [
         {
           id: 1,
@@ -35,6 +35,13 @@ const bookmarkSlice = createSlice({
         item => item.id !== action.payload,
       );
     },
+    renameCollection(state, action) {
+      const {collectionId, newCollectionName} = action.payload;
+      const currentCollection = state.collection.find(
+        item => item.id === collectionId,
+      );
+      currentCollection.name = newCollectionName;
+    },
     addBookmark(state, action) {
       const {collectionId, bookmark} = action.payload;
       const collection = state.collection.find(
@@ -65,5 +72,6 @@ export const {
   addBookmark,
   removeBookmark,
   searchCollection,
+  renameCollection,
 } = bookmarkSlice.actions;
 export default bookmarkSlice.reducer;

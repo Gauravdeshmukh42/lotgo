@@ -5,6 +5,19 @@ import {Text} from 'react-native';
 import RenderHTML from 'react-native-render-html';
 import {Card} from '../../components/Card';
 import {useSelector} from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {color} from '../../theme';
+import {SCREEN_WIDTH} from '../Home/HeightConstants';
+import {useBottomSheet} from '../../context';
+import {SheetOptions} from '../../context';
+import {
+  addCollection,
+  removeCollection,
+  renameCollection,
+} from '../../redux/slices';
+import {useDispatch} from 'react-redux';
+import Routes from '../../navigation/routes';
+import {useNavigation} from '@react-navigation/native';
 const tagsStyles = {
   img: {
     width: Dimensions.get('window').width - 20,
@@ -17,20 +30,57 @@ const tagsStyles = {
   },
 };
 const Saved = ({route}) => {
+  const {openBottomSheet} = useBottomSheet();
+  const dispatch = useDispatch();
   const posts = useSelector(state => state.bookmark.collection);
-  // console.log('posts', posts);
+  const collectionName = posts.find(
+    item => item.id === route.params.currentCollectionID,
+  );
   const currentCollectionID = route.params.currentCollectionID;
   const AvailableBookmarks = posts?.filter(
     item => item.id === currentCollectionID,
   );
+  const navigation = useNavigation();
+  // console.log(currentCollectionID);
   return (
-    <ScrollView style={[styles.container]}>
-      <View style={styles.cardContainer}>
-        {AvailableBookmarks[0]?.bookmarks?.map((item, index) => {
-          return <Card news={item} cardIndex={index} key={index} />;
-        })}
+    <>
+      <View style={styles.saveContainer}>
+        <Text style={styles.header}>{collectionName?.name}</Text>
+        <Ionicons
+          name="ellipsis-vertical"
+          color={color.text}
+          size={20}
+          onPress={() => {
+            openBottomSheet({
+              type: SheetOptions.MANIPULATE_COLLECTION,
+              snaps: ['20%', '40%'],
+              currentCollectionID: currentCollectionID,
+              collectionName: collectionName?.name,
+              onPressItem: option => {
+                dispatch(removeCollection(option));
+                navigation.navigate(Routes.BOOKMARK_SCREEN);
+              },
+              onPressRename: option => {
+                dispatch(
+                  renameCollection({
+                    collectionId: currentCollectionID,
+                    newCollectionName: option,
+                  }),
+                );
+              },
+            });
+          }}
+        />
       </View>
-    </ScrollView>
+
+      <ScrollView style={[styles.container]}>
+        <View style={styles.cardContainer}>
+          {AvailableBookmarks[0]?.bookmarks?.map((item, index) => {
+            return <Card news={item} cardIndex={index} key={index} />;
+          })}
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
@@ -56,5 +106,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     padding: 10,
+  },
+  saveContainer: {
+    padding: 15,
+    // borderBottomColor: 'black',
+    // borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });
